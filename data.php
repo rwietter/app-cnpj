@@ -32,6 +32,12 @@
 
   $data = $dados->result;
 
+  if($data == null){
+    echo "<h1>Problema com servidor, tente novamente!')</h1>";
+    header('Location: consulta.php');
+    return false;
+  }
+
   $data_situacao = $data->data_situacao;
   $atividade_principal_descrição = $data->atividade_principal[0]->text;
   $atividade_principal_code = $data->atividade_principal[0]->code;
@@ -88,6 +94,14 @@
       ";
   }
   curl_close($ch);
+  ?>
+  <form method="post">
+    <button type="submit" name="submit">Pesquisar outro CNPJ</button>
+  </form>
+  <?php
+  if (isset($_POST['submit'])) {
+    header('Location: consulta.php');
+  }
   ?>
 </body>
 

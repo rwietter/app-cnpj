@@ -21,6 +21,7 @@ routes.post("/receita", (request, response) => {
     })
     .catch((error) => {
       console.error(error);
+      return response.json({ error });
     });
 });
 

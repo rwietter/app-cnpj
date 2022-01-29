@@ -59,6 +59,12 @@
 
   if (isset($_POST['submit'])) {
     $cnpj = $_POST['cnpj'];
+
+    if(strlen($cnpj) < 14){
+      echo "<script>alert('CNPJ inválido!')</script>";
+      return false;
+    }
+
     $_SESSION['cnpj'] = $cnpj;
     header("Location: data.php");
     curl_close($ch);
