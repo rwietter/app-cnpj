@@ -14,7 +14,6 @@ app.use(routes);
 
 routes.post("/receita", (request, response) => {
   const [cnpj_value] = request.body;
-
   cnpj
     .consultaCNPJ({ cnpj: cnpj_value })
     .then((result) => {

@@ -10,15 +10,16 @@
       font: 14px sans-serif;
       display: flex;
       width: 100vw;
-      height: 100vh;
       justify-content: center;
       align-items: center;
       flex-flow: column;
+      min-height: 100vh;
     }
 
     .wrapper {
       width: 360px;
       padding: 20px;
+      height: 100%;
     }
 
     form {
@@ -29,7 +30,13 @@
       align-items: center;
     }
 
-    .data {}
+    .data {
+      height: 100%;
+    }
+
+    .atividades {
+      height: 100%;
+    }
   </style>
 </head>
 
@@ -48,37 +55,12 @@
     </div>
   </form>
   <?php
+  session_start();
+
   if (isset($_POST['submit'])) {
-    $data = $_POST['cnpj'];
-    $data_string = json_encode([$data]);
-
-    $ch = curl_init('http://localhost:3333/receita');
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt(
-      $ch,
-      CURLOPT_HTTPHEADER,
-      array(
-        'Content-Type: application/json',
-        'Content-Length: ' . strlen($data_string)
-      )
-    );
-
-    $data_cnpj = curl_exec($ch) . "\n";
-    $dados = json_decode($data_cnpj);
-    $data = $dados->result;
-    $data_situacao = $data->data_situacao;
-    $atividade_principal_descrição = $data->atividade_principal[0]->text;
-    $atividade_principal_code = $data->atividade_principal[0]->code;
-    echo "
-      <div class='data'>
-        <br><hr><br>
-        <strong>Data de situação:</strong> <span>$data_situacao</span><p></p>
-        <strong>Atividade principal descrição:</strong> <span>$atividade_principal_descrição</span><p></p>
-        <strong>Atividade principal código:</strong> <span>$atividade_principal_code</span><p></p>
-      </div>
-    ";
+    $cnpj = $_POST['cnpj'];
+    $_SESSION['cnpj'] = $cnpj;
+    header("Location: data.php");
     curl_close($ch);
   }
   ?>
